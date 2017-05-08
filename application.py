@@ -1,8 +1,8 @@
 #!flask/bin/python
-import boto
 import os
 from flask import Flask, jsonify, request, redirect, url_for, render_template
 from flaskrun import flaskrun
+from boto.dynamodb2 import connect_to_region
 from boto.dynamodb2.fields import HashKey
 from boto.dynamodb2.table import Table
 from hashids import Hashids
@@ -27,7 +27,7 @@ application = Flask(__name__)
 
 # conn = local_connection
 
-conn = boto.dynamodb.connect_to_region('us-west-2',
+conn = connect_to_region('us-west-2',
                                        aws_access_key_id=os.environ['AWS_ACCESS_KEY_ID'],
                                        aws_secret_access_key=os.environ['AWS_SECRET_KEY'])
 
