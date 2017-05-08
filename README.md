@@ -17,24 +17,37 @@ Remember to keep their business objectives in mind!
 Answers:
 -----------------------------------------------------------------------------------------------
 To detract from the question, Twitter actually provides outbound link analytics as a service
+
 https://analytics.twitter.com/about !
 
 
 Perceived requirements:
+
 The main objective of the client is to be able to understand their followers' attributes and behaviour after reading a tweet.
+
 The client wants a simple proof-of-concept rather than a full blown implementation
+
 Shortened URLs should be non-expiring
+
 Shortened URLs should be as short as possible
+
 Shortened URLs are write-once, read-often
 
 Technical requirements:
+
 The proof-of-concept has to maintain a one-one mapping of destination URLs to shortened keys
+
 The proof-of-concept's design has to keep in mind high availability and redundancy but does not have to have that in implementation
 
+
 Description of platform infrastructure:
+
 The design will assume a (consistent hashing) distributed key-value store such as Amazon DynamoDB or Cassandra - reason being we don't need the relational properties, and DynamoDB is easier to scale.
+
 Write-once, read-often has implications on the design of the system: split the URL generation endpoint from the redirection endpoint.
+
 Analytics are done by mining the server access logs: should be much more performant than logging from the application server. Also decouples datamining from application serving
+
 
 
 Business Logic:
