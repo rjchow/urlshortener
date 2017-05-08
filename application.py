@@ -1,9 +1,10 @@
 #!flask/bin/python
+import boto
+import os
 from flask import Flask, jsonify, request, redirect, url_for, render_template
 from flaskrun import flaskrun
 from boto.dynamodb2.fields import HashKey
 from boto.dynamodb2.table import Table
-from flask_dynamo import Dynamo
 from hashids import Hashids
 from urllib.parse import urlparse
 from boto.exception import JSONResponseError
@@ -15,17 +16,20 @@ import sys
 from boto.dynamodb2.layer1 import DynamoDBConnection
 
 # Connect to DynamoDB Local
-local_connection = DynamoDBConnection(
-    host='localhost',
-    port=8000,
-    aws_access_key_id='anything',
-    aws_secret_access_key='anything',
-    is_secure=False)
+# local_connection = DynamoDBConnection(
+#     host='localhost',
+#     port=8000,
+#     aws_access_key_id='anything',
+#     aws_secret_access_key='anything',
+#     is_secure=False)
 
 application = Flask(__name__)
 
-conn = local_connection
+# conn = local_connection
 
+conn = boto.dynamodb.connect_to_region('us-west-2',
+                                       aws_access_key_id=os.environ['AWS_ACCESS_KEY_ID'],
+                                       aws_secret_access_key=os.environ['AWS_SECRET_KEY'])
 
 ### Dynamodb table initialisation
 
