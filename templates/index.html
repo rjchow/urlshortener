@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script>
+
+        var form = new FormData();
+
+        var settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": "/create",
+            "method": "POST",
+            "headers": {},
+            "processData": false,
+            "contentType": false,
+            "mimeType": "multipart/form-data",
+            "data": form,
+            error: function (request, status, error) {
+                if (request.statusCode().status == '400' || request.statusCode().status == '503') {
+                    $('#name-group').addClass('has-error');
+                    $('#name-group').append('<div class="help-block">' + $.parseJSON(request.responseText).message + '</div>');
+                }
+            }
+
+        }
+
+
+        $(document).ready(function () {
+
+            $('form').submit(function (event) {
+                $('.form-group').removeClass('has-error');
+                $('.help-block').remove();
+                form.delete("destination_url");
+                form.append("destination_url", $('input[name=destination_url]').val());
+
+                $.ajax(settings).done(function (response) {
+                    console.log(response);
+                    short_url = $.parseJSON(response).short_url
+                    $('[name=short_url_field]').val(short_url)
+                });
+
+                event.preventDefault();
+            });
+
+
+        });
+    </script>
+</head>
+<body>
+<div class="col-sm-6 col-sm-offset-3">
+
+    <div><h2>URL-B-gone</h2></div>
+
+    <form action="/create" method="POST">
+
+        <div id="name-group" class="form-group">
+            <label for="destination_url">Destination URL</label>
+            <input type="text" class="form-control" name="destination_url" placeholder="http://example.com">
+        </div>
+
+        <button type="submit" class="btn btn-success">Submit <span class="fa fa-arrow-right"></span></button>
+
+    </form>
+    <br>
+    <div>
+        <form>
+            <label for="short_url_field" class="form-group">Shortened URL</label>
+            <input type="text" class="form-control" name="short_url_field" placeholder="Hit submit">
+        </form>
+    </div>
+
+</div>
+</body>
+</html>

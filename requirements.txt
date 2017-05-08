@@ -1,7 +1,15 @@
+appdirs==1.4.3
+boto==2.46.1
 click==6.7
+dynamodb-mapper==1.8.1
 Flask==0.12
+flask-dynamo==0.0.7
 itsdangerous==0.24
 Jinja2==2.9.3
 MarkupSafe==0.23
+onctuous==0.5.84
+packaging==16.8
+pyparsing==2.2.0
+six==1.10.0
 virtualenv==15.1.0
 Werkzeug==0.11.15
